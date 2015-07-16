@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from english.models import word, item
+from english.models import word, item, correction
 from django import forms
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 from operator import __or__ as OR
 from django.template import loader, Context
-
+from django.db.models.functions import Lower
+from .forms import UserForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     s = "hello world"
@@ -24,6 +27,10 @@ class newwordform(forms.ModelForm):
         model = word
         fields = ['theword', 'index', 'category']
 
+class newcorrform(forms.ModelForm):
+    class Meta:
+        model = correction
+        fields = ['correction_made', 'correction_word']
 
 def create(request):
     if request.method == 'POST':
@@ -33,6 +40,15 @@ def create(request):
             return HttpResponseRedirect('/entry/' + str(newword.pk))
     form = newwordform()
     return render(request, 'create_word.html', {'form':form})
+
+def createcorr(request):
+    if request.method == 'POST':
+        form = newcorrform(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('Thanks for submitting the correction!')
+    form = newcorrform()
+    return render(request, 'make_correction.html', {'form':form})
 
 class lookupform(forms.ModelForm):
     class Meta:
@@ -82,6 +98,7 @@ def findentry(request):
         word_list = None
         qobj = []
         search = 0
+        loop = 0
         file_position_search = query['file_position']
         kwicl_search = query.__getitem__('kwicl')
         keyword_search = query.__getitem__('keyword')
@@ -116,6 +133,9 @@ def findentry(request):
             search = 1
         if qobj:
             word_list = item.objects.filter(reduce(OR, qobj))
+            word_list = word_list.extra(order_by=['keyword'])
+            loop = 1
+        all_items = item.objects.all()
 
         if search > 0:
             c = Context({'word_list': word_list}, {'form': form})
@@ -123,6 +143,50 @@ def findentry(request):
             return HttpResponse(t.render(c))
 
 
+
     return render(request, 'findentry.html', {'form': form})
+
+
+def register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            registered=True
+        else:
+            print(user_form.errors)
+    else:
+        user_form = UserForm()
+    return render(request, 'register.html', {'user_form': user_form, 'registered': registered})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('/findentry/')
+            else:
+                return HttpResponse('Your account is disabled.')
+        else:
+            print("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'login.html', {})
+
+@login_required
+def requesttoedit(request):
+    return HttpResponse("Since you're logged in, you can submit a request to edit the archive!")
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/findentry/')
 
 

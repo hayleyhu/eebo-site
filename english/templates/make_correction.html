@@ -3,10 +3,9 @@
 <head>
 </head>
 <body>
-<h1>Add a new word to the database!</h1>
 <form action='.' method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_table }}
     <input type="submit" />
 </form>
 </body>

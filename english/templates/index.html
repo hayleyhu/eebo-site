@@ -35,7 +35,13 @@
 </head>
 <body>
 	<h1 id='top'>Search Results</h1>
-
+{% if user.is_authenticated %}
+  <a href="/requesttoedit/">Request to edit the archive</a><br />
+  <a href="/logout/">Logout</a><br />
+  {% else %}
+  <a href="/register/">Register Here</a><br />
+  <a href="/login/">Login</a><br />
+  {% endif %}
   <div>
     <table class="sortable" id="data">
       <thead>
@@ -43,9 +49,11 @@
       </thead>
       <tfoot></tfoot>
       <tbody>
+
       {% for word in word_list %}
       <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th><th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th></tr>
       {% endfor %}
+
       </tbody>
     </table>
   </div>

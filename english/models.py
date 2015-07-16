@@ -10,7 +10,7 @@ class category(models.Model):
 class word(models.Model):
     theword = models.CharField(u'word', max_length=200)
     index = models.CharField(u'index', max_length=50)
-    category = models.ForeignKey('category', blank=True, null=True)
+    category = models.ForeignKey(u'category', blank=True, null=True)
 
 
     def __unicode__(self):
@@ -19,9 +19,9 @@ class word(models.Model):
 
 class item(models.Model):
     file_position = models.CharField(u'file_position', max_length=200, blank=True, null=True)
-    kwicl = models.TextField(u'kwicl', blank=True, null=True)
+    kwicl = models.CharField(u'kwicl',max_length=200, blank=True, null=True)
     keyword = models.CharField(u'keyword', max_length=200, blank=True, null=True)
-    kwicr = models.TextField(u'kwicr', blank=True, null=True)
+    kwicr = models.CharField(u'kwicr', max_length=200, blank=True, null=True)
     choice1 = models.CharField(u'choice1', max_length=200, blank=True, null=True)
     choice2 = models.CharField(u'choice2', max_length=200, blank=True, null=True)
     choice3 = models.CharField(u'choice3', max_length=200, blank=True, null=True)
@@ -31,9 +31,15 @@ class item(models.Model):
     def __unicode__(self):
         return self.keyword
 
+CORRECTION_CHOICES = ((1, 'choice 1 is correct'), (2, 'choice 2 is correct'), (3, 'choice 3 is correct'), (4, 'No choice is correct'), (5, 'No choice is given'), (6, 'Wrong number of black dots (and/or no comp choice given)'), (7, 'Foreign'))
 
-# class correction(models.Model):
-#     corrected_word = models.CharField(u'word', max_length=200)
-#     author = models.CharField(u'index', max_length=50)
-#     correction_made = models.ChoiceField(choices=[(x, x) for x in range(1, 7)])
-#     # time =
+
+class correction(models.Model):
+    corrected_word = models.CharField(u'corrected_word', max_length=200)
+    correction_author = models.CharField(u'correction_author', max_length=50)
+    correction_made = models.IntegerField(u'correction_made', choices=CORRECTION_CHOICES)
+    correction_word = models.CharField(u'correction_word', max_length=200, blank=True, null=True)
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return str(self.time)
