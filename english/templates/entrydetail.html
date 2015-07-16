@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+{% for word in word_list %}
+<h1>{{word.keyword}}</h1>
+<table>
+    <tr><td>file position: {{word.file_position}}</td></tr>
+    <tr><td>kwicl: {{word.kwicl}}</td></tr>
+    <tr><td>keyword: {{word.keyword}}</td></tr>
+    <tr><td>kwicr: {{word.kwicr}}</td></tr>
+    <tr><td>choice1: {{word.choice1}}</td></tr>
+    <tr><td>choice2: {{word.choice2}}</td></tr>
+    <tr><td>choice3: {{word.choice2}}</td></tr>
+    <tr><td>correct_choice:{{word.correct_choice}}</td></tr>
+</table>
+{% endfor %}
+</body>
+</html>
