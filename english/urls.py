@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^$', 'english.views.home'),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^createcorr/$', 'english.views.createcorr'),
+
     url(r'^lookup/$', 'english.views.lookup'),
     url(r'^$', findentry),
     url(r'^findentry/$', 'english.views.findentry'),
@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^requesttoedit/$', views.requesttoedit, name='requesttoedit'),
     url(r'^logout/$', views.user_logout, name='logout'),
+    url(r'^revision/$', 'english.views.revision'),
 ]

@@ -4,12 +4,10 @@
 </head>
 <body>
 <h1>Lookup a word!</h1>
-<form action='.' method="GET">
+<form action='.' method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" />
 </form>
-{% include "make_correction.html" %}
-{% include "index.html" %}
 </body>
 </html>

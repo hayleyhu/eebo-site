@@ -34,7 +34,7 @@
 </script>
 </head>
 <body>
-	<h1 id='top'>Search Results</h1>
+	<h1 id='top'>Corrections</h1>
 {% if user.is_authenticated %}
   <a href="/logout/">Logout</a><br />
   {% else %}
@@ -42,16 +42,45 @@
   <a href="/login/">Login</a><br />
   {% endif %}
   <div>
-    <table class="sortable" id="data">
+    <table id="data">
+        {% if user.is_staff %}
       <thead>
-        <tr><th>File Position</th><th>KWICL</th><th>Keyword</th><th>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th></th></tr>
+        <tr><th>File Position</th><th>Correction</th><th>Choice 1</th>
+            <th>Choice 2</th><th>Choice 3</th><th>Approve/Reject</th><th></th></tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
 
       {% for word in word_list %}
-      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th><th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th><a href="/requesttoedit/">edit</a></th></tr>
+      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}
+          <span style = 'background-color: #ffff00'>{{word.keyword}}</span>
+          <span style = 'background-color: #50f733'>{{word.keyword}}</span>
+          {{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th>
+          <th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th>
+              <form action='.' method="POST">
+        {% csrf_token %}
+        {{ approvalform.as_table }}
+
+</form></th>
+
       {% endfor %}
+      {% else %}
+            <thead>
+        <tr><th>File Position</th><th>Correction</th><th>Choice 1</th>
+            <th>Choice 2</th><th>Choice 3</th><th>Approve/Reject</th><th></th></tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+
+      {% for word in word_list %}
+      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}
+          <span style = 'background-color: #ffff00'>{{word.keyword}}</span>
+          <span style = 'background-color: #50f733'>{{word.keyword}}</span>
+          {{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th>
+          <th>{{word.choice3}}</th><th>{{word.correct_choice}}</th>
+
+      {% endfor %}
+      {% endif %}
 
       </tbody>
     </table>

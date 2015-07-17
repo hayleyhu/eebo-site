@@ -10,6 +10,7 @@ from django.db.models.functions import Lower
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from english.forms import correctionform, findentryform, newwordform, lookupform, approvalform
 
 def home(request):
     s = "hello world"
@@ -22,15 +23,8 @@ def detail(request, pk):
 
 
 
-class newwordform(forms.ModelForm):
-    class Meta:
-        model = word
-        fields = ['theword', 'index', 'category']
 
-class newcorrform(forms.ModelForm):
-    class Meta:
-        model = correction
-        fields = ['correction_made', 'correction_word']
+
 
 def create(request):
     if request.method == 'POST':
@@ -41,19 +35,8 @@ def create(request):
     form = newwordform()
     return render(request, 'create_word.html', {'form':form})
 
-def createcorr(request):
-    if request.method == 'POST':
-        form = newcorrform(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('Thanks for submitting the correction!')
-    form = newcorrform()
-    return render(request, 'make_correction.html', {'form':form})
 
-class lookupform(forms.ModelForm):
-    class Meta:
-        model = word
-        fields = ['theword']
+
 
 
 
@@ -76,10 +59,7 @@ def lookup(request):
             return HttpResponse('word does not exist in database')
     return render(request, 'lookup.html', {'form': form})
 
-class findentryform(forms.ModelForm):
-    class Meta:
-        model = item
-        fields = ['file_position', 'kwicl', 'keyword', 'kwicr', 'choice1', 'choice2', 'choice3', 'correct_choice']
+
 
 
 def wordinfo(request, pk):
@@ -142,7 +122,7 @@ def findentry(request):
             t = loader.get_template("findentry.html")
             return HttpResponse(t.render(c))
 
-
+    form = findentryform()
 
     return render(request, 'findentry.html', {'form': form})
 
@@ -180,13 +160,42 @@ def user_login(request):
     else:
         return render(request, 'login.html', {})
 
+
+
+
+
 @login_required
 def requesttoedit(request):
-    return HttpResponse("Since you're logged in, you can submit a request to edit the archive!")
+    if request.method == 'POST':
+        corrform = correctionform(request.POST)
+        if corrform.is_valid():
+            corrform.save()
+            return HttpResponseRedirect('/findentry/')
+    corrform = correctionform()
+    return render(request, 'findentry.html', {'corrform':corrform})
+
 
 @login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/findentry/')
+
+
+def revision(request, corrected_word):
+
+    word_list = item.objects.all()
+    if request.method == 'POST':
+        form = approvalform(request.POST)
+        if form.is_valid():
+            formdata = form.cleaned_data
+            word.update(approved=formdata)
+
+    form = newwordform()
+    return render(request, 'revision.html', {'word_list': word_list, 'form': form})
+
+
+
+
+
 
 

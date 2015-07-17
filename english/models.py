@@ -32,14 +32,15 @@ class item(models.Model):
         return self.keyword
 
 CORRECTION_CHOICES = ((1, 'choice 1 is correct'), (2, 'choice 2 is correct'), (3, 'choice 3 is correct'), (4, 'No choice is correct'), (5, 'No choice is given'), (6, 'Wrong number of black dots (and/or no comp choice given)'), (7, 'Foreign'))
-
+APPROVAL_CHOICES = ((1, 'approve'), (0, 'reject'))
 
 class correction(models.Model):
-    corrected_word = models.CharField(u'corrected_word', max_length=200)
+    corrected_word = models.CharField(u'corrected_word', max_length=200, blank=True, null=True)
     correction_author = models.CharField(u'correction_author', max_length=50)
     correction_made = models.IntegerField(u'correction_made', choices=CORRECTION_CHOICES)
     correction_word = models.CharField(u'correction_word', max_length=200, blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
+    approved = models.IntegerField(u'approved', choices=APPROVAL_CHOICES)
 
     def __unicode__(self):
         return str(self.time)
