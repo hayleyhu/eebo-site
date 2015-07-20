@@ -20,12 +20,6 @@ def detail(request, pk):
     cat = word.objects.get(pk=int(pk))
     return render(request, "detail.html", {'cat': cat})
 
-
-
-
-
-
-
 def create(request):
     if request.method == 'POST':
         form = newwordform(request.POST)
@@ -35,17 +29,10 @@ def create(request):
     form = newwordform()
     return render(request, 'create_word.html', {'form':form})
 
-
-
-
-
-
 def search_for_keywords(keyword):
     posts = word.objects.all()
     post = posts.filter(theword=keyword)
     return posts
-
-
 
 def lookup(request):
     if request.method == 'GET':
@@ -59,13 +46,9 @@ def lookup(request):
             return HttpResponse('word does not exist in database')
     return render(request, 'lookup.html', {'form': form})
 
-
-
-
 def wordinfo(request, pk):
     cat = item.objects.get(pk=int(pk))
     return render(request, "wordinfo.html", {'cat': cat})
-
 
 def findentry(request):
 
@@ -160,10 +143,6 @@ def user_login(request):
     else:
         return render(request, 'login.html', {})
 
-
-
-
-
 @login_required
 def requesttoedit(request):
     if request.method == 'POST':
@@ -194,7 +173,9 @@ def revision(request, corrected_word):
     return render(request, 'revision.html', {'word_list': word_list, 'form': form})
 
 
-
+def index(request):
+    word_list = item.objects.all()
+    return render(request, 'index.html', {'action':'Display all items', 'word_list':word_list})
 
 
 
