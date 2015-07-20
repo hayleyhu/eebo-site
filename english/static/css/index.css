@@ -5,3 +5,25 @@
 table{
 	width: 100%;
 }
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+    display: block;
+    width: 250px;
+    font-weight: bold;
+
+    color: #FFFFFF;
+    background-color: #98bf21;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    
+}

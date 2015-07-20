@@ -44,7 +44,7 @@ def lookup(request):
                 newword = word.objects.get(theword=field)
                 return HttpResponseRedirect('/entry/' + str(newword.index))
             return HttpResponse('word does not exist in database')
-    return render(request, 'lookup.html', {'form': form})
+    return render(request, 'findentry.html', {'form': form})
 
 def wordinfo(request, pk):
     cat = item.objects.get(pk=int(pk))
@@ -143,7 +143,7 @@ def user_login(request):
     else:
         return render(request, 'login.html', {})
 
-@login_required
+# @login_required
 def requesttoedit(request):
     if request.method == 'POST':
         corrform = correctionform(request.POST)
@@ -151,7 +151,7 @@ def requesttoedit(request):
             corrform.save()
             return HttpResponseRedirect('/findentry/')
     corrform = correctionform()
-    return render(request, 'findentry.html', {'corrform':corrform})
+    return render(request, 'requesttoedit.html', {'corrform':corrform})
 
 
 @login_required
@@ -160,7 +160,7 @@ def user_logout(request):
     return HttpResponseRedirect('/findentry/')
 
 
-def revision(request, corrected_word):
+def revision(request):
 
     word_list = item.objects.all()
     if request.method == 'POST':
