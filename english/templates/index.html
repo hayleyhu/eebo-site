@@ -3,9 +3,8 @@
 <head> 
 	<title>English Document Search</title>
 	<link type="text/css" rel="stylesheet" href="../static/css/index.css" />
-	<link type="text/css" rel="stylesheet" href="../static/css/bootstrap.css" />
+	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-	<script type="text/javascript" src="../static/js/bootstrap.js"></script>
 	<script type="text/javascript" src="../static/js/site.js"></script>
   <script language="JavaScript">
   $(document).ready(function(){
@@ -34,7 +33,9 @@
 </script>
 </head>
 <body>
-<ul class='navbar'>
+<div class='navbar'>
+<ul>
+  <li> <a class="current" href="/">Show All</a></li>
   <li>{% if user.is_authenticated %}
   <a href="/logout/">Logout</a><br />
   {% else %}
@@ -46,7 +47,8 @@
   <li><a href="/revision/">Review Corrections</a></li>
 
 </ul>
-  <h1 id='top'>Early Modern English Missing Letters Archive</h1>
+</div>
+  <h1>Early Modern English Missing Letters Archive</h1>
   
   <div>
     <table id="data">

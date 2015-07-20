@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link type="text/css" rel="stylesheet" href="../static/css/index.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+	<div class='navbar'>
+<ul>
+	<li> <a href="/">Show All</a></li>
+  <li>{% if user.is_authenticated %}
+  <a href="/logout/">Logout</a><br />
+  {% else %}
+  <a href="/register/">Register</a> / <a href="/login/">Login</a>
+  {% endif %}
+  </li>
+  <li><a href="/findentry/">Search an Entry</a></li>
+  <li><a href="/requesttoedit/">Edit an Entry</a></li>
+  <li><a href="/revision/">Review Corrections</a></li>
+
+</ul>
+</div>
 <form action='.' method="POST">
     {% csrf_token %}
     {{ corrform.as_table }}

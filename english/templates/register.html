@@ -2,19 +2,35 @@
 <html>
     <head>
         <title>History and Future of the Book</title>
+    <link type="text/css" rel="stylesheet" href="../static/css/index.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     </head>
 
     <body>
+        <div class='navbar'>
+<ul>
+    <li> <a href="/">Show All</a></li>
+  <li>{% if user.is_authenticated %}
+  <a href="/logout/">Logout</a><br />
+  {% else %}
+  <a class="current" href="/register/">Register</a> / <a href="/login/">Login</a>
+  {% endif %}
+  </li>
+  <li><a href="/findentry/">Search an Entry</a></li>
+  <li><a href="/requesttoedit/">Edit an Entry</a></li>
+  <li><a href="/revision/">Review Corrections</a></li>
+
+</ul>
+</div>
         <h1>Register</h1>
 
         {% if registered %}
-        <strong>thank you for registering!</strong>
+        <strong>Thank you for registering!</strong>
         <a href="/findentry/">Return to the homepage.</a><br />
         {% else %}
-        <strong>register here!</strong><br />
+        <strong>Register here!</strong><br />
 
-        <form id="user_form" method="post" action="/register/"
-                enctype="multipart/form-data">
+        <form id="user_form" method="post" action="/register/" enctype="multipart/form-data">
 
             {% csrf_token %}
 
