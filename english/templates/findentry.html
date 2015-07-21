@@ -46,12 +46,50 @@
 </ul>
 </div>
 <h1>Search an Entry</h1>
+<div class='search_form'>
 <form action='' method="GET">
 
-    <table>{{ form.as_table}}</table>
+    <table>
+      <form action="test" method="GET">
+    <p>
+        <label for="file_position">File Position: </label>
+        <input id="file_position" type="text" name="file_position" value="{{current_name}}"/>
+    </P>
+    <p>
+      <label for="kwicl">kwicl: </label>
+      <input id="kwicl" type="text" name="kwicl" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="keyword">keyword: </label>
+      <input id="keyword" type="text" name="keyword" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="kwicr">kwicr: </label>
+      <input id="kwicr" type="text" name="kwicr" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="choice1">choice1: </label>
+      <input id="choice1" type="text" name="choice1" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="choice2">choice2: </label>
+      <input id="choice2" type="text" name="choice2" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="choice3">choice3: </label>
+      <input id="choice3" type="text" name="choice3" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="correct_choice">correct choice: </label>
+      <input id="correct_choice" type="text" name="correct_choice" value="{{current_name}}"/>
+    </p>
+
+
+    </table>
     
     <input type="submit" value="Submit"/>
 </form>
+</div>
   <h1 id='top'>Search Results</h1>
 
   <div>
