@@ -181,7 +181,7 @@ def user_logout(request):
     return HttpResponseRedirect('/findentry/')
 
 
-def revision(request, corrected_word):
+def revision(request):
 
     word_list = item.objects.all()
     if request.method == 'POST':
