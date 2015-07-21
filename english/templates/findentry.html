@@ -46,10 +46,11 @@
 </ul>
 </div>
 <h1>Search an Entry</h1>
-<form action='.' method="GET">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" />
+<form action='' method="GET">
+
+    <table>{{ form.as_table}}</table>
+    
+    <input type="submit" value="Submit"/>
 </form>
   <h1 id='top'>Search Results</h1>
 

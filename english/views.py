@@ -51,12 +51,12 @@ def wordinfo(request, pk):
     return render(request, "wordinfo.html", {'cat': cat})
 
 def findentry(request):
-
+    form = findentryform()
     if request.method == 'GET':
-
         form = findentryform(request.GET)
         if form.is_valid():
             query = form.cleaned_data
+        
         page = None
         word_list = None
         qobj = []
@@ -105,7 +105,8 @@ def findentry(request):
             t = loader.get_template("findentry.html")
             return HttpResponse(t.render(c))
 
-    form = findentryform()
+    else:
+        form = findentryform()
 
     return render(request, 'findentry.html', {'form': form})
 
