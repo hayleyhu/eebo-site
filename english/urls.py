@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^$', views.index, name = 'index'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^lookup/$', 'english.views.lookup'),
-    url(r'^$', findentry),
+    # url(r'^$', findentry),
     url(r'^findentry/$', 'english.views.findentry'),
     url(r'^wordinfo/(?P<pk>[0-9]+)/$', 'english.views.wordinfo'),
     url(r'^register/$', views.register, name='register'),

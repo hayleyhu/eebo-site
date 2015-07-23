@@ -145,15 +145,17 @@ def user_login(request):
         return render(request, 'login.html', {})
 
 # @login_required
-def requesttoedit(request):
+def requesttoedit(request, file_position1):
+    # if request.method == 'POST':
+    #     corrform = correctionform(request.POST)
+    #     if corrform.is_valid():
+    #         corrform.save()
+    #         return HttpResponseRedirect('/findentry/')
+    # corrform = correctionform()
+    # return render(request, 'requesttoedit.html', {'corrform':corrform})
+    item1 = item.objects.get(file_position=file_position1)
     if request.method == 'POST':
-        corrform = correctionform(request.POST)
-        if corrform.is_valid():
-            corrform.save()
-            return HttpResponseRedirect('/findentry/')
-    corrform = correctionform()
-    return render(request, 'requesttoedit.html', {'corrform':corrform})
-
+        corrform = correctionform(request.POST, instance=item1)
 
 @login_required
 def user_logout(request):

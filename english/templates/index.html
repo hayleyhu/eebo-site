@@ -3,9 +3,9 @@
 <head> 
 	<title>English Document Search</title>
 	<link type="text/css" rel="stylesheet" href="../static/css/index.css" />
-	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript" src="../static/js/site.js"></script>
+  <script src="../static/js/sorttable.js"></script>
   <script language="JavaScript">
   $(document).ready(function(){
         $('#data').after('<div id="nav"></div>');
@@ -51,15 +51,17 @@
   <h1>Early Modern English Missing Letters Archive</h1>
   
   <div>
-    <table id="data">
+    <table id="data" class='sortable'>
       <thead>
-        <tr><th>File Position</th><th>KWICL</th><th>Keyword</th><th>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th></th></tr>
+        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'></th></tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
 
+
       {% for word in word_list %}
-      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th><th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th><a href="/requesttoedit/">edit</a></th></tr>
+      
+      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td><a href="/requesttoedit/">edit</a></td></tr>
       {% endfor %}
 
       </tbody>

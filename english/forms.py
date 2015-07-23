@@ -28,8 +28,8 @@ class findentryform(forms.ModelForm):
 
 class correctionform(forms.ModelForm):
     class Meta:
-        model = correction
-        fields = ['corrected_word', 'correction_made', 'correction_word']
+        model = item
+        fields = ['correct_choice']
 
 class approvalform(forms.ModelForm):
     class Meta:
