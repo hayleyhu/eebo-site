@@ -27,7 +27,18 @@
             $('#data tbody tr').css('opacity','0.0').hide().slice(startItem, endItem).
                     css('display','table-row').animate({opacity:1}, 300);
         });
+    $('#corrections').change(function(){
+      if ($(this).val() == '4' || $(this).val() == '5' || $(this).val() == '6'){
+        $('#correct_word').removeAttr('disabled');
+      }
+      else {
+        $('#correct_word').attr('disabled', 'disabled').val("");
+      }
     });
+  });
+
+  
+  
 </script>
 </head>
 <body>
@@ -94,20 +105,27 @@
   <h1 id='top'>Search Results</h1>
 
   <div>
+    <form action="" method='POST'>
     <table id="data" class='sortable'>
       <thead>
-        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'></th></tr>
+        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'>Potential Correction</th><th class='sorttable_nosort'>Your Word</th></tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
 
       {% for word in word_list %}
       
-      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td><a href="/requesttoedit/">edit</a></td></tr>
+      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td>
+        <td><select value="{{word.file_position}}" name="corrections" id="corrections">
+          <option selected>(null)</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+        </select></td>
+        <td><input id='correct_word' disabled></input></td>
+      </tr>
       {% endfor %}
 
       </tbody>
     </table>
+    </form>
   </div>
 </body>
 </html>

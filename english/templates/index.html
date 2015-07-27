@@ -34,7 +34,7 @@
 </head>
 <body>
 <div class='navbar'>
-<ul>
+<ul >
   <li> <a class="current" href="/">Show All</a></li>
   <li>{% if user.is_authenticated %}
   <a href="/logout/">Logout</a><br />
@@ -53,7 +53,7 @@
   <div>
     <table id="data" class='sortable'>
       <thead>
-        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'></th></tr>
+        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'>Manual Correction</th></tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
@@ -61,12 +61,20 @@
 
       {% for word in word_list %}
       
-      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td><a href="/requesttoedit/">edit</a></td></tr>
+      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td></td></tr>
       {% endfor %}
 
       </tbody>
     </table>
   </div>
+  <div class='key'><div><span id='keyhead'>Key for Correct Choice</span></div>
+    
+      <li>1: Computer choice 1 is correct</li><li>2: Computer choice 2 is correct</li><li>3: Computer choice 3 is correct</li><li>4: No computer choice is correct</li><li>5: No comp choice is given</li>
+      <li>6: Wrong number of black dots (and/or no computer choice given)</li>
+      <li>7: Foreign</li>
+      
+
+    </ul></div>
 
 </body>
 </html>

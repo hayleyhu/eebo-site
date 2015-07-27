@@ -25,6 +25,24 @@ class findentryform(forms.ModelForm):
         model = item
         fields = ['file_position', 'kwicl', 'keyword', 'kwicr', 'choice1', 'choice2', 'choice3', 'correct_choice']
 
+# class UnknownForm(forms.Form):
+#     choices = forms.ModelMultipleChoiceField(
+#         choices = queryset_of_valid_choices, # not optional, use .all() if unsure
+#         widget  = forms.CheckboxSelectMultiple,
+#     )
+
+# if request.method == 'POST':
+#     form = UnknownForm(request.POST):
+#     if 'delete' in request.POST:
+#         for item in form.cleaned_data['choices']:
+#             item.delete()
+#     if 'mark_read' in request.POST:
+#         for item in form.cleaned_data['choices']:
+#             item.read = True; 
+#             item.save()
+
+
+
 
 class correctionform(forms.ModelForm):
     class Meta:
