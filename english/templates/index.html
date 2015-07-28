@@ -9,7 +9,7 @@
   <script language="JavaScript">
   $(document).ready(function(){
         $('#data').after('<div id="nav"></div>');
-        var rowsShown = 20;
+        var rowsShown = 200;
         var rowsTotal = $('#data tbody tr').length;
         var numPages = rowsTotal/rowsShown;
         for(i = 0;i < numPages;i++) {
@@ -53,7 +53,7 @@
   <div>
     <table id="data" class='sortable'>
       <thead>
-        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'>Manual Correction</th></tr>
+        <tr><th class="sorttable_numeric">File Position</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Selection</th><th  class='sorttable_nosort'>Manual Correction</th></tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
@@ -61,7 +61,7 @@
 
       {% for word in word_list %}
       
-      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td></td></tr>
+      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td>{{word.manually_entered_word}}</td></tr>
       {% endfor %}
 
       </tbody>

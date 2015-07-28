@@ -110,7 +110,6 @@ def findentry(request):
 
     return render(request, 'findentry.html', {'form': form})
 
-
 def register(request):
     registered = False
     if request.method == 'POST':
@@ -145,18 +144,15 @@ def user_login(request):
         return render(request, 'login.html', {})
 
 # @login_required
-def requesttoedit(request, file_position1):
-    # if request.method == 'POST':
-    #     corrform = correctionform(request.POST)
-    #     if corrform.is_valid():
-    #         corrform.save()
-    #         return HttpResponseRedirect('/findentry/')
-    # corrform = correctionform()
-    # return render(request, 'requesttoedit.html', {'corrform':corrform})
-    item1 = item.objects.get(file_position=file_position1)
+def requesttoedit(request):
     if request.method == 'POST':
-        corrform = correctionform(request.POST, instance=item1)
-
+        corrform = correctionform(request.POST)
+        if corrform.is_valid():
+            corrform.save()
+            return HttpResponseRedirect('/findentry/')
+    corrform = correctionform()
+    return render(request, 'requesttoedit.html','revision.html', {'corrform':corrform})
+    
 @login_required
 def user_logout(request):
     logout(request)
@@ -164,21 +160,22 @@ def user_logout(request):
 
 
 def revision(request):
-
-    word_list = item.objects.all()
+    correction_list = correction.objects.all()
+    # word_list = item.objects.all()
     if request.method == 'POST':
         form = approvalform(request.POST)
         if form.is_valid():
             formdata = form.cleaned_data
             word.update(approved=formdata)
 
-    form = newwordform()
-    return render(request, 'revision.html', {'word_list': word_list, 'form': form})
+    form = approvalform()
+    return render(request, 'revision.html', {'correction_list': correction_list, 'form': form})
 
 
 def index(request):
     word_list = item.objects.all()
     return render(request, 'index.html', {'action':'Display all items', 'word_list':word_list})
+
 
 
 
