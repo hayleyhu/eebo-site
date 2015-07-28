@@ -3,9 +3,8 @@
 <head> 
 	<title>English Document Search</title>
 	<link type="text/css" rel="stylesheet" href="../static/css/index.css" />
-	<link type="text/css" rel="stylesheet" href="../static/css/bootstrap.css" />
+	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-	<script type="text/javascript" src="../static/js/bootstrap.js"></script>
 	<script type="text/javascript" src="../static/js/site.js"></script>
   <script language="JavaScript">
   $(document).ready(function(){
@@ -34,15 +33,25 @@
 </script>
 </head>
 <body>
-	<h1 id='top'>Search Results</h1>
-{% if user.is_authenticated %}
+<div class='navbar'>
+<ul>
+  <li> <a class="current" href="/">Show All</a></li>
+  <li>{% if user.is_authenticated %}
   <a href="/logout/">Logout</a><br />
   {% else %}
-  <a href="/register/">Register Here</a><br />
-  <a href="/login/">Login</a><br />
+  <a href="/register/">Register</a> / <a href="/login/">Login</a>
   {% endif %}
+  </li>
+  <li><a href="/findentry/">Search an Entry</a></li>
+  <li><a href="/requesttoedit/">Edit an Entry</a></li>
+  <li><a href="/revision/">Review Corrections</a></li>
+
+</ul>
+</div>
+  <h1>Early Modern English Missing Letters Archive</h1>
+  
   <div>
-    <table class="sortable" id="data">
+    <table id="data">
       <thead>
         <tr><th>File Position</th><th>KWICL</th><th>Keyword</th><th>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th></th></tr>
       </thead>

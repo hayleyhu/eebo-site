@@ -19,10 +19,8 @@ from english import views
 from english.views import findentry
 admin.autodiscover()
 urlpatterns = [
-    url(r'^$', 'english.views.home'),
+    url(r'^$', views.index, name = 'index'),
     url(r'^admin/', include(admin.site.urls)),
-
-
     url(r'^lookup/$', 'english.views.lookup'),
     url(r'^$', findentry),
     url(r'^findentry/$', 'english.views.findentry'),

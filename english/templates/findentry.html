@@ -1,15 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link type="text/css" rel="stylesheet" href="../static/css/index.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script language="JavaScript">
+  $(document).ready(function(){
+        $('#data').after('<div id="nav"></div>');
+        var rowsShown = 20;
+        var rowsTotal = $('#data tbody tr').length;
+        var numPages = rowsTotal/rowsShown;
+        for(i = 0;i < numPages;i++) {
+            var pageNum = i + 1;
+            $('#nav').append('<a href="#" rel="'+i+'">'+pageNum+'</a> ');
+        }
+        $('#data tbody tr').hide();
+        $('#data tbody tr').slice(0, rowsShown).show();
+        $('#nav a:first').addClass('active');
+        $('#nav a').bind('click', function(){
+
+            $('#nav a').removeClass('active');
+            $(this).addClass('active');
+            var currPage = $(this).attr('rel');
+            var startItem = currPage * rowsShown;
+            var endItem = startItem + rowsShown;
+            $('#data tbody tr').css('opacity','0.0').hide().slice(startItem, endItem).
+                    css('display','table-row').animate({opacity:1}, 300);
+        });
+    });
+</script>
 </head>
 <body>
-<h1>Lookup a word!</h1>
-<form action='.' method="GET">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" />
+<div class='navbar'>
+<ul>
+	<li> <a href="/">Show All</a></li>
+  <li>{% if user.is_authenticated %}
+  <a href="/logout/">Logout</a><br />
+  {% else %}
+  <a href="/register/">Register</a> / <a href="/login/">Login</a>
+  {% endif %}
+  </li>
+  <li><a class="current" href="/findentry/">Search an Entry</a></li>
+  <li><a href="/requesttoedit/">Edit an Entry</a></li>
+  <li><a href="/revision/">Review Corrections</a></li>
+
+</ul>
+</div>
+<h1>Search an Entry</h1>
+<form action='' method="GET">
+
+    <table>{{ form.as_table}}</table>
+    
+    <input type="submit" value="Submit"/>
 </form>
-{% include "make_correction.html" %}
-{% include "index.html" %}
+  <h1 id='top'>Search Results</h1>
+
+  <div>
+    <table style:'width: 100%;' id="data">
+      <thead>
+        <tr><th>File Position</th><th>KWICL</th><th>Keyword</th><th>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th></th></tr>
+      </thead>
+      <tfoot></tfoot>
+      <tbody>
+
+      {% for word in word_list %}
+      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th><th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th><a href="/requesttoedit/">edit</a></th></tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>

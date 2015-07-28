@@ -20,12 +20,6 @@ def detail(request, pk):
     cat = word.objects.get(pk=int(pk))
     return render(request, "detail.html", {'cat': cat})
 
-
-
-
-
-
-
 def create(request):
     if request.method == 'POST':
         form = newwordform(request.POST)
@@ -35,17 +29,10 @@ def create(request):
     form = newwordform()
     return render(request, 'create_word.html', {'form':form})
 
-
-
-
-
-
 def search_for_keywords(keyword):
     posts = word.objects.all()
     post = posts.filter(theword=keyword)
     return posts
-
-
 
 def lookup(request):
     if request.method == 'GET':
@@ -57,23 +44,19 @@ def lookup(request):
                 newword = word.objects.get(theword=field)
                 return HttpResponseRedirect('/entry/' + str(newword.index))
             return HttpResponse('word does not exist in database')
-    return render(request, 'lookup.html', {'form': form})
-
-
-
+    return render(request, 'findentry.html', {'form': form})
 
 def wordinfo(request, pk):
     cat = item.objects.get(pk=int(pk))
     return render(request, "wordinfo.html", {'cat': cat})
 
-
 def findentry(request):
-
+    form = findentryform()
     if request.method == 'GET':
-
         form = findentryform(request.GET)
         if form.is_valid():
             query = form.cleaned_data
+        
         page = None
         word_list = None
         qobj = []
@@ -122,7 +105,8 @@ def findentry(request):
             t = loader.get_template("findentry.html")
             return HttpResponse(t.render(c))
 
-    form = findentryform()
+    else:
+        form = findentryform()
 
     return render(request, 'findentry.html', {'form': form})
 
@@ -160,11 +144,7 @@ def user_login(request):
     else:
         return render(request, 'login.html', {})
 
-
-
-
-
-@login_required
+# @login_required
 def requesttoedit(request):
     if request.method == 'POST':
         corrform = correctionform(request.POST)
@@ -172,7 +152,7 @@ def requesttoedit(request):
             corrform.save()
             return HttpResponseRedirect('/findentry/')
     corrform = correctionform()
-    return render(request, 'findentry.html', {'corrform':corrform})
+    return render(request, 'requesttoedit.html', {'corrform':corrform})
 
 
 @login_required
@@ -194,7 +174,9 @@ def revision(request):
     return render(request, 'revision.html', {'word_list': word_list, 'form': form})
 
 
-
+def index(request):
+    word_list = item.objects.all()
+    return render(request, 'index.html', {'action':'Display all items', 'word_list':word_list})
 
 
 
