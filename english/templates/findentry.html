@@ -6,7 +6,7 @@
 	<script language="JavaScript">
   $(document).ready(function(){
         $('#data').after('<div id="nav"></div>');
-        var rowsShown = 20;
+        var rowsShown = 21;
         var rowsTotal = $('#data tbody tr').length;
         var numPages = rowsTotal/rowsShown;
         for(i = 0;i < numPages;i++) {
@@ -17,7 +17,6 @@
         $('#data tbody tr').slice(0, rowsShown).show();
         $('#nav a:first').addClass('active');
         $('#nav a').bind('click', function(){
-
             $('#nav a').removeClass('active');
             $(this).addClass('active');
             var currPage = $(this).attr('rel');
@@ -46,28 +45,92 @@
 </ul>
 </div>
 <h1>Search an Entry</h1>
+<div class='search_form'>
 <form action='' method="GET">
 
-    <table>{{ form.as_table}}</table>
+    <table>
+      <form action="test" method="GET">
+    <p>
+        <label for="file_position">File Position: </label>
+        <input id="file_position" type="text" name="file_position" value="{{current_name}}"/>
+    </P>
+    <p>
+      <label for="kwicl">kwicl: </label>
+      <input id="kwicl" type="text" name="kwicl" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="keyword">keyword: </label>
+      <input id="keyword" type="text" name="keyword" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="kwicr">kwicr: </label>
+      <input id="kwicr" type="text" name="kwicr" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="choice1">choice1: </label>
+      <input id="choice1" type="text" name="choice1" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="choice2">choice2: </label>
+      <input id="choice2" type="text" name="choice2" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="choice3">choice3: </label>
+      <input id="choice3" type="text" name="choice3" value="{{current_name}}"/>
+    </p>
+    <p>
+      <label for="correct_choice">correct choice: </label>
+      <input id="correct_choice" type="text" name="correct_choice" value="{{current_name}}"/>
+    </p>
+
+
+    </table>
     
     <input type="submit" value="Submit"/>
 </form>
+</div>
+
   <h1 id='top'>Search Results</h1>
 
   <div>
+      <form action="." method="POST">{% csrf_token %}
+
     <table style:'width: 100%;' id="data">
       <thead>
-        <tr><th>File Position</th><th>KWICL</th><th>Keyword</th><th>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th></th></tr>
+        <tr><th>File Position</th><th>KWICL</th><th>Keyword</th>
+            <th>KWICR</th><th>Choice 1</th><th>Choice 2</th>
+            <th>Choice 3</th><th>Correct Choice</th><th></th></tr>
       </thead>
       <tfoot></tfoot>
+
       <tbody>
 
+
       {% for word in word_list %}
-      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th><th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th><th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th><a href="/requesttoedit/">edit</a></th></tr>
+      <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th>
+          <th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th>
+          <th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th>{{corrform.form.as_table}}</th>
+          <!--<th><select>-->
+            <!--<option value=0>0</option>-->
+            <!--<option value=1> 1</option>-->
+            <!--<option value=2> 2</option>-->
+            <!--<option value=3> 3</option>-->
+            <!--<option value=4> 4</option>-->
+            <!--<option value=5> 5</option>-->
+            <!--<option value=6> 6</option>-->
+          <!--</select>-->
+
+
+        <!--<input id="user_correction" type="text" name="user_correction" value="{{current_name}}"/></th>--></tr>
+
       {% endfor %}
 
+
       </tbody>
+
     </table>
+      <input type="submit" value="Submit"/>
+          </form>
   </div>
 </body>
 </html>

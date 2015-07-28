@@ -10,15 +10,19 @@ from django.db.models.functions import Lower
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from english.forms import correctionform, findentryform, newwordform, lookupform, approvalform
+from english.forms import correctionform, findentryform, newwordform, lookupform#, approvalform
+from django.forms.formsets import formset_factory
 
 def home(request):
     s = "hello world"
     return HttpResponse(s)
 
-def detail(request, pk):
-    cat = word.objects.get(pk=int(pk))
-    return render(request, "detail.html", {'cat': cat})
+def detail(request):
+
+    corrformset = formset_factory(correctionform)
+    corrform = corrformset(initial=[{'correction_made': 0, 'correction_author': request.user}])
+    return render(request, "detail.html", {'corrform': corrform})
+
 
 def create(request):
     if request.method == 'POST':
@@ -50,18 +54,17 @@ def wordinfo(request, pk):
     cat = item.objects.get(pk=int(pk))
     return render(request, "wordinfo.html", {'cat': cat})
 
+
 def findentry(request):
     form = findentryform()
     if request.method == 'GET':
         form = findentryform(request.GET)
         if form.is_valid():
             query = form.cleaned_data
-        
-        page = None
+
         word_list = None
         qobj = []
         search = 0
-        loop = 0
         file_position_search = query['file_position']
         kwicl_search = query.__getitem__('kwicl')
         keyword_search = query.__getitem__('keyword')
@@ -97,18 +100,27 @@ def findentry(request):
         if qobj:
             word_list = item.objects.filter(reduce(OR, qobj))
             word_list = word_list.extra(order_by=['keyword'])
-            loop = 1
-        all_items = item.objects.all()
+            corrformset = formset_factory(correctionform, extra = len(word_list))
+            corrform = corrformset(initial=[{'correction_made': 0, 'correction_author': request.user}])
+            for entry in corrform:
+                if entry.is_valid():
+                    return HttpResponse('ji')
+                    validform = entry
+                    validform.save()
 
         if search > 0:
-            c = Context({'word_list': word_list}, {'form': form})
-            t = loader.get_template("findentry.html")
-            return HttpResponse(t.render(c))
+            return render(request, 'findentry.html', {'form': form, 'corrform': corrform, 'word_list': word_list})
+            # c = Context({'word_list': word_list}, {'form': form}, {'corrform': corrform})
+            # t = loader.get_template("findentry.html")
+            # return HttpResponse(t.render(c))
 
     else:
         form = findentryform()
+    corrform = correctionform()
 
-    return render(request, 'findentry.html', {'form': form})
+
+
+    return render(request, 'findentry.html', {'form': form, 'corrform': corrform})
 
 
 def register(request):
@@ -145,9 +157,21 @@ def user_login(request):
         return render(request, 'login.html', {})
 
 # @login_required
+# def requesttoedit(request):
+#     if request.method == 'POST':
+#         corrform = correctionform(request.POST)
+#         if corrform.is_valid():
+#             corrform.save()
+#             return HttpResponseRedirect('/findentry/')
+#     corrform = correctionform()
+#     return render(request, 'requesttoedit.html', {'corrform':corrform})
+
+@login_required
 def requesttoedit(request):
+    CorrFormSet = formset_factory(correctionform, extra = len(word_list))
+    corrform = CorrFormSet(initial=[{'correction_made': 0, 'correction_author': request.user, 'corrected_word': word} for aword in word_list])
     if request.method == 'POST':
-        corrform = correctionform(request.POST)
+        corrform = CorrFormSet(request.POST)
         if corrform.is_valid():
             corrform.save()
             return HttpResponseRedirect('/findentry/')

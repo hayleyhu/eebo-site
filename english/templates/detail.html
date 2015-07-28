@@ -3,10 +3,10 @@
 <head>
 </head>
 <body>
-<h1>{{cat.theword}}</h1>
+<form action="." method="POST">
+    {% csrf_token %}
+    {{corrform.as_p}}</form>
 
-<table><tr><td>{{cat.index}}</td></tr>
-    <tr><td>{{cat.category}}</td></tr></table>
 
 </body>
 </html>

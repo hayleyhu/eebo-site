@@ -29,9 +29,9 @@ class findentryform(forms.ModelForm):
 class correctionform(forms.ModelForm):
     class Meta:
         model = correction
-        fields = ['corrected_word', 'correction_made', 'correction_word']
+        fields = ['correction_made', 'correction_word']
 
-class approvalform(forms.ModelForm):
-    class Meta:
-        model = correction
-        fields = ['approved']
+# class approvalform(forms.ModelForm):
+#     class Meta:
+#         model = correction
+#         fields = ['approved']
