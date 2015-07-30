@@ -11,14 +11,14 @@ h1{
 	width: 100%;
 }
 
-ul {
+.navbar ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-li {
+.navbar li {
     float: left;
     display: block;
     width: 18%;
@@ -39,4 +39,13 @@ li {
 .navbar a {
     color:#FFFFFF;
     font-family:Helvetica;
+}
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
+table.sortable thead th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
+    content: " \25B4\25BE" 
 }

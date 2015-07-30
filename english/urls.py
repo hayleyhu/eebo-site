@@ -21,14 +21,14 @@ admin.autodiscover()
 urlpatterns = [
     url(r'^$', views.index, name = 'index'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^lookup/$', 'english.views.lookup'),
-    url(r'^$', findentry),
+    # url(r'^lookup/$', 'english.views.lookup'),
+    # url(r'^$', findentry),
     url(r'^findentry/$', 'english.views.findentry'),
-    url(r'^wordinfo/(?P<pk>[0-9]+)/$', 'english.views.wordinfo'),
+    # url(r'^wordinfo/(?P<pk>[0-9]+)/$', 'english.views.wordinfo'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^requesttoedit/$', views.requesttoedit, name='requesttoedit'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^revision/$', 'english.views.revision'),
-    url(r'^detail/$', 'english.views.detail'),
+    url(r'^detail/(?P<bdword>.*)$', 'english.views.submit_corr', {'bdword':'A07686+dwdID53'}),
 ]

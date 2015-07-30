@@ -15,16 +15,15 @@
   {% endif %}
   </li>
   <li><a href="/findentry/">Search an Entry</a></li>
-  <li><a class="current" href="/requesttoedit/">Edit an Entry</a></li>
+
   <li><a href="/revision/">Review Corrections</a></li>
 
 </ul>
 </div>
-<h1>Lookup a word!</h1>
-<!-- <form action='.' method="GET">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" />
-</form> -->
+<h1>Please search the entry first and then click the edit link.</h1>
+<form action="/requesttoedit/" method="post" class="form horizontal well">{% csrf_token %}
+    {{ corrform.as_p }}
+    <imput type="submit" class="btn btn-inverse" value="Aktualizuj">
+</form>
 </body>
 </html>

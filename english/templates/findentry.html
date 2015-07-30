@@ -3,7 +3,8 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="../static/css/index.css" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-	<script language="JavaScript">
+  <script src="../static/js/sorttable.js"></script>
+  <script language="JavaScript">
   $(document).ready(function(){
         $('#data').after('<div id="nav"></div>');
         var rowsShown = 21;
@@ -25,7 +26,18 @@
             $('#data tbody tr').css('opacity','0.0').hide().slice(startItem, endItem).
                     css('display','table-row').animate({opacity:1}, 300);
         });
+    $('#corrections').change(function(){
+      if ($(this).val() == '4' || $(this).val() == '5' || $(this).val() == '6'){
+        $('#correct_word').removeAttr('disabled');
+      }
+      else {
+        $('#correct_word').attr('disabled', 'disabled').val("");
+      }
     });
+  });
+
+  
+  
 </script>
 </head>
 <body>
@@ -39,7 +51,7 @@
   {% endif %}
   </li>
   <li><a class="current" href="/findentry/">Search an Entry</a></li>
-  <li><a href="/requesttoedit/">Edit an Entry</a></li>
+
   <li><a href="/revision/">Review Corrections</a></li>
 
 </ul>
@@ -90,6 +102,7 @@
 </form>
 </div>
 
+
   <h1 id='top'>Search Results</h1>
 
   <div>
@@ -100,13 +113,18 @@
         <tr><th>File Position</th><th>KWICL</th><th>Keyword</th>
             <th>KWICR</th><th>Choice 1</th><th>Choice 2</th>
             <th>Choice 3</th><th>Correct Choice</th><th></th></tr>
-      </thead>
-      <tfoot></tfoot>
+
+
+
+  <div>
+    <form action="" method='POST'>
+
 
       <tbody>
 
 
       {% for word in word_list %}
+
       <tr><th>{{word.file_position}}</th><th>{{word.kwicl}}</th>
           <th>{{word.keyword}}</th><th>{{word.kwicr}}</th><th>{{word.choice1}}</th>
           <th>{{word.choice2}}</th><th>{{word.choice3}}</th><th>{{word.correct_choice}}</th><th>{{corrform.form.as_table}}</th>
@@ -121,16 +139,18 @@
           <!--</select>-->
 
 
-        <!--<input id="user_correction" type="text" name="user_correction" value="{{current_name}}"/></th>--></tr>
 
       {% endfor %}
 
 
       </tbody>
 
-    </table>
+ </table>
       <input type="submit" value="Submit"/>
           </form>
+
+
+
   </div>
 </body>
 </html>

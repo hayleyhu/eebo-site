@@ -14,7 +14,6 @@ class word(models.Model):
     index = models.CharField(u'index', max_length=50)
     category = models.ForeignKey(u'category', blank=True, null=True)
 
-
     def __unicode__(self):
         return self.theword
 
@@ -37,9 +36,14 @@ class item(models.Model):
 APPROVAL_CHOICES = ((1, 'approve'), (-1, 'reject'), (0, 'hold'))
 CORRECTION_CHOICES = ((0, '--'),(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5'), (6, '6'), (7, '7'))
 
+
+
+
+
 class correction(models.Model):
-    corrected_word = models.ForeignKey(item, blank=True, null=True)
-    correction_author = models.ForeignKey(User, blank=True, null=True)
+
+    corrected_word = models.ForeignKey(item)
+    correction_author = models.ForeignKey(User)
     correction_made = models.IntegerField(u'correction_made', choices=CORRECTION_CHOICES)
     correction_word = models.CharField(u'correction_word', max_length=200, blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)

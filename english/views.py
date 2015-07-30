@@ -6,12 +6,13 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 from operator import __or__ as OR
 from django.template import loader, Context
-from django.db.models.functions import Lower
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from english.forms import correctionform, findentryform, newwordform, lookupform#, approvalform
-from django.forms.formsets import formset_factory
+from english.forms import correctionform, findentryform, newwordform, lookupform, approvalform
+from django.forms.models import inlineformset_factory, modelformset_factory
+from django.shortcuts import render_to_response
+from collections import defaultdict
 
 def home(request):
     s = "hello world"
@@ -57,71 +58,65 @@ def wordinfo(request, pk):
 
 def findentry(request):
     form = findentryform()
-    if request.method == 'GET':
-        form = findentryform(request.GET)
-        if form.is_valid():
-            query = form.cleaned_data
 
-        word_list = None
-        qobj = []
-        search = 0
-        file_position_search = query['file_position']
-        kwicl_search = query.__getitem__('kwicl')
-        keyword_search = query.__getitem__('keyword')
-        kwicr_search = query.__getitem__('kwicr')
-        choice1_search = query.__getitem__('choice1')
-        choice2_search = query.__getitem__('choice2')
-        choice3_search = query.__getitem__('choice3')
-        correct_choice_search = query.__getitem__('correct_choice')
-        if file_position_search:
-            qobj.append(Q(file_position__contains=file_position_search))
-            search = 100
-        if kwicl_search:
-            qobj.append(Q(kwicl__contains=kwicl_search))
-            search = 1
-        if keyword_search:
-            qobj.append(Q(keyword__contains=keyword_search))
-            search = 1
-        if kwicr_search:
-            qobj.append(Q(kwicr__contains=kwicr_search))
-            search = 1
-        if choice1_search:
-            qobj.append(Q(choice1__contains=choice1_search))
-            search = 1
-        if choice2_search:
-            qobj.append(Q(choice2__contains=choice2_search))
-            search = 1
-        if choice3_search:
-            qobj.append(Q(choice3__contains=choice3_search))
-            search = 1
-        if correct_choice_search:
-            qobj.append(Q(correct_choice__contains=correct_choice_search))
-            search = 1
-        if qobj:
-            word_list = item.objects.filter(reduce(OR, qobj))
-            word_list = word_list.extra(order_by=['keyword'])
-            corrformset = formset_factory(correctionform, extra = len(word_list))
-            corrform = corrformset(initial=[{'correction_made': 0, 'correction_author': request.user}])
-            for entry in corrform:
-                if entry.is_valid():
-                    return HttpResponse('ji')
-                    validform = entry
-                    validform.save()
+    form = findentryform(request.GET)
+    if form.is_valid():
+        query = form.cleaned_data
 
-        if search > 0:
-            return render(request, 'findentry.html', {'form': form, 'corrform': corrform, 'word_list': word_list})
-            # c = Context({'word_list': word_list}, {'form': form}, {'corrform': corrform})
-            # t = loader.get_template("findentry.html")
-            # return HttpResponse(t.render(c))
+    word_list = None
+    qobj = []
+    search = 0
+    file_position_search = query['file_position']
+    kwicl_search = query.__getitem__('kwicl')
+    keyword_search = query.__getitem__('keyword')
+    kwicr_search = query.__getitem__('kwicr')
+    choice1_search = query.__getitem__('choice1')
+    choice2_search = query.__getitem__('choice2')
+    choice3_search = query.__getitem__('choice3')
+    correct_choice_search = query.__getitem__('correct_choice')
+    if file_position_search:
+        qobj.append(Q(file_position__contains=file_position_search))
+        search = 100
+    if kwicl_search:
+        qobj.append(Q(kwicl__contains=kwicl_search))
+        search = 1
+    if keyword_search:
+        qobj.append(Q(keyword__contains=keyword_search))
+        search = 1
+    if kwicr_search:
+        qobj.append(Q(kwicr__contains=kwicr_search))
+        search = 1
+    if choice1_search:
+        qobj.append(Q(choice1__contains=choice1_search))
+        search = 1
+    if choice2_search:
+        qobj.append(Q(choice2__contains=choice2_search))
+        search = 1
+    if choice3_search:
+        qobj.append(Q(choice3__contains=choice3_search))
+        search = 1
+    if correct_choice_search:
+        qobj.append(Q(correct_choice__contains=correct_choice_search))
+        search = 1
+    if qobj:
+        word_list = item.objects.filter(reduce(OR, qobj))
+        word_list = word_list.extra(order_by=['keyword'])
+
+
+
+    if search > 0:
+
+        c = Context({'word_list': word_list}, {'form': form})
+        t = loader.get_template("findentry.html")
+        return HttpResponse(t.render(c))
 
     else:
         form = findentryform()
-    corrform = correctionform()
 
 
 
-    return render(request, 'findentry.html', {'form': form, 'corrform': corrform})
 
+    return render(request, 'findentry.html', {'form': form})
 
 def register(request):
     registered = False
@@ -176,9 +171,8 @@ def requesttoedit(request):
             corrform.save()
             return HttpResponseRedirect('/findentry/')
     corrform = correctionform()
-    return render(request, 'requesttoedit.html', {'corrform':corrform})
-
-
+    return render(request, 'requesttoedit.html','revision.html', {'corrform':corrform})
+    
 @login_required
 def user_logout(request):
     logout(request)
@@ -186,21 +180,33 @@ def user_logout(request):
 
 
 def revision(request):
-
-    word_list = item.objects.all()
+    correction_list = correction.objects.all()
+    # word_list = item.objects.all()
     if request.method == 'POST':
         form = approvalform(request.POST)
         if form.is_valid():
             formdata = form.cleaned_data
             word.update(approved=formdata)
 
-    form = newwordform()
-    return render(request, 'revision.html', {'word_list': word_list, 'form': form})
+    form = approvalform()
+    return render(request, 'revision.html', {'correction_list': correction_list, 'form': form})
 
 
 def index(request):
     word_list = item.objects.all()
     return render(request, 'index.html', {'action':'Display all items', 'word_list':word_list})
+
+def submit_corr(request, bdword):
+    if hasattr(request, 'user') and request.user.is_authenticated():
+        word = item.objects.filter(file_position=bdword).values()
+        CorrFormSet = inlineformset_factory(item, correction, fields=['correction_made', 'correction_word'], can_delete=False, extra=1)
+        form = CorrFormSet(request.POST, request.FILES, initial=[{'corrected_word': item.objects.filter(file_position=bdword).values(), 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+        if request.method == 'POST':
+            if form.is_valid():
+                form.save()
+                return HttpResponse('thanks')
+    return render(request, "detail.html", {"form": form,})
+
 
 
 

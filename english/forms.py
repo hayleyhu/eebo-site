@@ -4,7 +4,6 @@ from english.models import word, item, correction
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
-
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
@@ -25,13 +24,14 @@ class findentryform(forms.ModelForm):
         model = item
         fields = ['file_position', 'kwicl', 'keyword', 'kwicr', 'choice1', 'choice2', 'choice3', 'correct_choice']
 
-
 class correctionform(forms.ModelForm):
     class Meta:
         model = correction
         fields = ['correction_made', 'correction_word']
 
-# class approvalform(forms.ModelForm):
-#     class Meta:
-#         model = correction
-#         fields = ['approved']
+
+
+class approvalform(forms.ModelForm):
+    class Meta:
+        model = correction
+        fields = ['approved']
