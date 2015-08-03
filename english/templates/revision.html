@@ -60,7 +60,7 @@
 
 
 {% for corr in correction_list %}
-      <tr><td>{{corr.correction_author}}</td><td>{{corr.time | date:"m/d/Y"}}</td><td>{{corr.corrected_word.kwicl}}</td><td>{{corr.corrected_word.keyword}}</td><td>{{corr.corrected_word.kwicr}}</td><td>{{corr.corrected_word.choice1}}</td><td>{{corr.corrected_word.choice2}}</td><td>{{corr.corrected_word.choice3}}</td><td>{{corr.corrected_word.correct_choice}}</td><td>{{corr.corrected_word.manually_entered_word}}</td><td>{{corr.correction_made}}</td><td>{{corr.correction_word}}</td><td>{{ form.as_p }}</td></tr>
+      <tr><td>{{corr.correction_author}}</td><td>{{corr.time | date:"m/d/Y"}}</td><td>{{corr.corrected_word.kwicl}}</td><td>{{corr.corrected_word.keyword}}</td><td>{{corr.corrected_word.kwicr}}</td><td>{{corr.corrected_word.choice1}}</td><td>{{corr.corrected_word.choice2}}</td><td>{{corr.corrected_word.choice3}}</td><td>{{corr.corrected_word.correct_choice}}</td><td>{{corr.corrected_word.manually_entered_word}}</td><td>{{corr.correction_made}}</td><td>{{corr.correction_word}}</td><td><a href="../findentry/detail/{{corr.corrected_word.file_position}}">Submit correction</a></td></tr>
 {% endfor %}
 
       </tbody>
