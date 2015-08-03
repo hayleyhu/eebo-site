@@ -3,13 +3,21 @@
 <head>
 </head>
 <body>
+<h3>Correct word: {{word.keyword}}</h3>
 <form action="." method="POST">
     {% csrf_token %}
     {{ CorrFormSet.management_form }}
 
     {{form.as_p}}
 <input type="submit" value="submit" /></form>
+  <div class='key'><div><span id='keyhead'>Key for Correct Choice</span></div>
 
+      <li>1: Computer choice 1 is correct</li><li>2: Computer choice 2 is correct</li><li>3: Computer choice 3 is correct</li><li>4: No computer choice is correct</li><li>5: No comp choice is given</li>
+      <li>6: Wrong number of black dots (and/or no computer choice given)</li>
+      <li>7: Foreign</li>
+
+
+    </ul></div>
 
 </body>
 </html>

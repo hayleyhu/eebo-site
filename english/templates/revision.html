@@ -19,7 +19,6 @@
         $('#data tbody tr').slice(0, rowsShown).show();
         $('#nav a:first').addClass('active');
         $('#nav a').bind('click', function(){
-
             $('#nav a').removeClass('active');
             $(this).addClass('active');
             var currPage = $(this).attr('rel');
@@ -42,7 +41,7 @@
   {% endif %}
   </li>
   <li><a href="/findentry/">Search an Entry</a></li>
-
+  <li><a href="/requesttoedit/">Edit an Entry</a></li>
   <li><a class="current" href="/revision/">Review Corrections</a></li>
 
 </ul>
@@ -54,23 +53,20 @@
         <div>
           <table id="data" class='sortable'>
             <thead>
-        <tr><th>Author</th><th>Time</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Correct Choice</th><th  class='sorttable_nosort'>Manual Correction</th></tr>
+        <tr><th>Author</th><th>Time</th><th class='sorttable_nosort'>KWICL</th><th class="sorttable_alpha">Keyword</th><th class='sorttable_nosort'>KWICR</th><th>Choice 1</th><th>Choice 2</th><th>Choice 3</th><th>Selection</th><th  class='sorttable_nosort'>Manual Correction</th><th>New Selection</th><th class='sorttable_nosort'>New Manual Correction</th><th class='sorttable_nosort'>Your Revision</th></tr>
       </thead>
       <tfoot></tfoot>
       <tbody>
 
 
-{% for corr in correction_list%}
-      <tr><td>{{corr.correction_author}}</td><td>{{corr.time | date:"m/d/Y"}}</td><td>{{corr.corrected_word.kwicl}}</td><td>{{corr.corrected_word.keyword}}</td><td>{{corr.corrected_word.kwicr}}</td><td>{{corr.corrected_word.choice1}}</td><td>{{corr.corrected_word.choice2}}</td><td>{{corr.corrected_word.choice3}}</td><td>{{corr.corrected_word.correct_choice}}</td><td></td></tr>
-      {% endfor %}
+{% for corr in correction_list %}
+      <tr><td>{{corr.correction_author}}</td><td>{{corr.time | date:"m/d/Y"}}</td><td>{{corr.corrected_word.kwicl}}</td><td>{{corr.corrected_word.keyword}}</td><td>{{corr.corrected_word.kwicr}}</td><td>{{corr.corrected_word.choice1}}</td><td>{{corr.corrected_word.choice2}}</td><td>{{corr.corrected_word.choice3}}</td><td>{{corr.corrected_word.correct_choice}}</td><td>{{corr.corrected_word.manually_entered_word}}</td><td>{{corr.correction_made}}</td><td>{{corr.correction_word}}</td><td>{{ form.as_p }}</td></tr>
+{% endfor %}
 
       </tbody>
     </table>
 
-
-
         </div>
-      <div>{{ form.as_p }}</div> 
         <input type="submit" class="btn btn-inverse" value="approval">
       </form>
   </div>

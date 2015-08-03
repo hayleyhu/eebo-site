@@ -19,7 +19,7 @@ from english import views
 from english.views import findentry
 admin.autodiscover()
 urlpatterns = [
-    url(r'^$', views.index, name = 'index'),
+    url(r'^$', views.index, name='index'),
     url(r'^admin/', include(admin.site.urls)),
     # url(r'^lookup/$', 'english.views.lookup'),
     # url(r'^$', findentry),
@@ -30,5 +30,5 @@ urlpatterns = [
     url(r'^requesttoedit/$', views.requesttoedit, name='requesttoedit'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^revision/$', 'english.views.revision'),
-    url(r'^detail/(?P<bdword>.*)$', 'english.views.submit_corr', {'bdword':'A07686+dwdID53'}),
+    url(r'^findentry/detail/(?P<bdword>.*)$', 'english.views.submit_corr')
 ]

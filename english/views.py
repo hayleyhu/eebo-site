@@ -214,7 +214,7 @@ def submit_corr(request, bdword):
         else:
             form = CorrFormSet(initial=[{'correction_author': request.user,}])
                                          # 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
-    return render(request, "detail.html", {"form": form,})
+    return render(request, "detail.html", {"form": form,"word": word})
 
 
 
