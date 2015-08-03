@@ -196,15 +196,24 @@ def index(request):
     word_list = item.objects.all()
     return render(request, 'index.html', {'action':'Display all items', 'word_list':word_list})
 
+
 def submit_corr(request, bdword):
     if hasattr(request, 'user') and request.user.is_authenticated():
-        word = item.objects.filter(file_position=bdword).values()
-        CorrFormSet = inlineformset_factory(item, correction, fields=['correction_made', 'correction_word'], can_delete=False, extra=1)
-        form = CorrFormSet(request.POST, request.FILES, initial=[{'corrected_word': item.objects.filter(file_position=bdword).values(), 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+        word = item.objects.filter(file_position=bdword)[0]
+        CorrFormSet = inlineformset_factory(item, correction, fields=['correction_made', 'correction_word','correction_author'], can_delete=False, extra=1)
+        form = CorrFormSet(request.POST, request.FILES, instance=word, initial=[{'correction_author': request.user,
+                                                                  'correction_word': item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+        # form.fields['correction_author'].widget = forms.HiddenInput()
+
         if request.method == 'POST':
             if form.is_valid():
-                form.save()
-                return HttpResponse('thanks')
+                for entry in form:
+                    entry.save()
+                    return HttpResponse('thanks')
+
+        else:
+            form = CorrFormSet(initial=[{'correction_author': request.user,
+                                         'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
     return render(request, "detail.html", {"form": form,})
 
 
