@@ -203,7 +203,7 @@ def submit_corr(request, bdword):
         CorrFormSet = inlineformset_factory(item, correction, fields=['correction_made', 'correction_word','correction_author'], can_delete=False, extra=1)
         form = CorrFormSet(request.POST, request.FILES, instance=word, initial=[{'correction_author': request.user,
                                                                   'correction_word': item.objects.filter(file_position=bdword).values()[0]['keyword']}])
-        # form.fields['correction_author'].widget = forms.HiddenInput()
+
 
         if request.method == 'POST':
             if form.is_valid():
@@ -212,8 +212,8 @@ def submit_corr(request, bdword):
                     return HttpResponse('thanks')
 
         else:
-            form = CorrFormSet(initial=[{'correction_author': request.user,
-                                         'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+            form = CorrFormSet(initial=[{'correction_author': request.user,}])
+                                         # 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
     return render(request, "detail.html", {"form": form,})
 
 
