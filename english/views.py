@@ -201,20 +201,37 @@ def submit_corr(request, bdword):
     if hasattr(request, 'user') and request.user.is_authenticated():
         word = item.objects.filter(file_position=bdword)[0]
         CorrFormSet = inlineformset_factory(item, correction, fields=['correction_made', 'correction_word','correction_author'], can_delete=False, extra=1)
-        form = CorrFormSet(request.POST, request.FILES, instance=word, initial=[{'correction_author': request.user,
-                                                                  'correction_word': item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+        form = CorrFormSet(request.POST, request.FILES, instance=word, initial=[{'correction_author': request.user,}])
+                                                                  # 'correction_word': item.objects.filter(file_position=bdword).values()[0]['keyword']}])
 
 
         if request.method == 'POST':
             if form.is_valid():
                 for entry in form:
                     entry.save()
-                    return HttpResponse('thanks')
 
         else:
-            form = CorrFormSet(initial=[{'correction_author': request.user,}])
-                                         # 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
-    return render(request, "detail.html", {"form": form,"word": word})
+            form = CorrFormSet(instance=word, initial=[{'correction_author': request.user,}])
+                                             # 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+        return render(request, "correctionform.html", {"form": form,"word": word})
+
+def submit_approval(request, bdword):
+    if hasattr(request, 'user') and request.user.is_authenticated():
+        word = item.objects.filter(file_position=bdword)[0]
+        ApprFormSet = inlineformset_factory(item, correction, fields=['approved'], can_delete=False, extra=1)
+        form = ApprFormSet(request.POST, request.FILES, instance=word, initial=[{'correction_author': request.user,}])
+                                                                  # 'correction_word': item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+
+
+        if request.method == 'POST':
+            if form.is_valid():
+                for entry in form:
+                    entry.save()
+
+        else:
+            form = ApprFormSet(instance=word, initial=[{'correction_author': request.user,}])
+                                             # 'correction_word':item.objects.filter(file_position=bdword).values()[0]['keyword']}])
+        return render(request, "approvalform.html", {"form": form,"word": word})
 
 
 

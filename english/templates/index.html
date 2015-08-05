@@ -61,7 +61,7 @@
 
       {% for word in word_list %}
       
-      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td><a href="findentry/detail/{{word.file_position}}">Submit correction</a></td></tr>
+      <tr><td>{{word.file_position}}</td><td>{{word.kwicl}}</td><td>{{word.keyword}}</td><td>{{word.kwicr}}</td><td>{{word.choice1}}</td><td>{{word.choice2}}</td><td>{{word.choice3}}</td><td>{{word.correct_choice}}</td><td><a href="correction/{{word.file_position}}">Submit correction</a></td></tr>
       {% endfor %}
 
       </tbody>

@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^requesttoedit/$', views.requesttoedit, name='requesttoedit'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^revision/$', 'english.views.revision'),
-    url(r'^findentry/detail/(?P<bdword>.*)$', 'english.views.submit_corr')
+    url(r'^correction/(?P<bdword>.*)$', 'english.views.submit_corr'),
+    url(r'^approval/(?P<bdword>.*)$', 'english.views.submit_approval'),
+
 ]
